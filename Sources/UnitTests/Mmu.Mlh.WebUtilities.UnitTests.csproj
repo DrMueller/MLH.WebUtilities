@@ -2,10 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Features>IOperation</Features>
+    <CodeAnalysisRuleSet>..\..\CA_TestCode.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="TestingAreas\Areas\ErrorHandling\Models\" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Mmu.Mlh.TestingExtensions" Version="2.1.10" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Mmu.Mlh.WebUtilities.csproj" />
   </ItemGroup>
 
 </Project>

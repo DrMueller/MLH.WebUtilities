@@ -9,11 +9,11 @@ using Newtonsoft.Json;
 
 namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Middlewares
 {
-    internal class ExceptionHandlingMiddleware
+    internal class GlobalExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        public GlobalExceptionHandlingMiddleware(RequestDelegate next)
         {
             _next = next;
         }

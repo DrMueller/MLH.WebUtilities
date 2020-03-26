@@ -24,6 +24,8 @@ namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Models
 
         public static ServerException CreateFromException(Exception exception)
         {
+            Guard.ObjectNotNull(() => exception);
+
             var mostInnerEx = exception.GetMostInnerException();
             return new ServerException(mostInnerEx.Message, mostInnerEx.GetType().Name, mostInnerEx.StackTrace);
         }
