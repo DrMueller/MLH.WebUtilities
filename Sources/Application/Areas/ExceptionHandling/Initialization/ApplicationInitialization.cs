@@ -8,10 +8,10 @@ namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Initialization
     [PublicAPI]
     public static class ApplicationInitialization
     {
-        public static IApplicationBuilder UseExceptionHandler(this IApplicationBuilder app)
+        public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app)
         {
             Guard.ObjectNotNull(() => app);
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
             return app;
         }
