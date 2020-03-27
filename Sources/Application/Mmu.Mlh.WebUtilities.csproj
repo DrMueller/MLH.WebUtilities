@@ -10,7 +10,7 @@
     <Authors>DrMueller</Authors>
     <Description>DrMuellers little Web Utilities</Description>
     <PackageProjectUrl>https://github.com/DrMueller/MLH.WebUtilities</PackageProjectUrl>
-    <PackageIcon>M.png</PackageIcon>
+    <PackageIconUrl>https://raw.githubusercontent.com/DrMueller/MLH.WebUtilities/master/Sources/Application/Infrastructure/Assets/M.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/DrMueller/MLH.WebUtilities</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <PackageLicenseUrl></PackageLicenseUrl>
@@ -21,10 +21,6 @@
     <FileVersion Condition="'$(BUILD_BUILDNUMBER)' == '' ">1.0.0.0</FileVersion>
     <Version Condition="'$(BUILD_BUILDNUMBER)' == '' ">1.0.0.0</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="Infrastructure/Assets/M.png" Pack="true" PackagePath="" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
