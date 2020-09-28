@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModels;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.Adapters.Profiles
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.Adapters.Implementation.Profiles
 {
     public class IndividualDataModelProfile : Profile
     {

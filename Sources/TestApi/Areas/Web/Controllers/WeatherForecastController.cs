@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Controllers
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModels;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.TypeConfigurations
 {

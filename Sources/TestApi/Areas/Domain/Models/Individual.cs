@@ -26,8 +26,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models
             string firstName,
             string lastName,
             DateTime birthdate,
-            long id)
-            : base(id)
+            long id) : base(id)
         {
             Guard.ObjectNotNull(() => lastName);
 

@@ -10,7 +10,7 @@ using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class IndividualsController : ControllerBase
     {
         private readonly IIndividualRepository _individualRepo;
@@ -25,7 +25,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<IndividualDto>>> GetAllAsync()
         {
-            var allIndividuals = await _individualRepo.LoadAllAsync();
+            var allIndividuals = await _individualRepo.LoadAllIndividualsAsync();
 
             var dtos = allIndividuals.Select(ind => _mapper.Map<IndividualDto>(ind)).ToList();
 

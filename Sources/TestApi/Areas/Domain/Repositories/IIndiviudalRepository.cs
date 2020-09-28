@@ -1,9 +1,11 @@
-﻿using Mmu.Mlh.DomainExtensions.Areas.Repositories;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories
 {
-    public interface IIndividualRepository : IRepository<Individual, long>
+    public interface IIndividualRepository
     {
+        public Task<IReadOnlyCollection<Individual>> LoadAllIndividualsAsync();
     }
 }

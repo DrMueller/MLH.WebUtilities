@@ -1,7 +1,8 @@
 ﻿using Lamar;
-using Mmu.Mlh.DataAccess.Areas.DatabaseAccess;
-using Mmu.Mlh.DataAccess.Areas.DataModeling.Services;
-using Mmu.Mlh.DomainExtensions.Areas.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.Adapters;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModelRepositories;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Infrastructure.DependencyInjection
 {
@@ -12,12 +13,13 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Infrastructure.DependencyInjection
             Scan(
                 scanner =>
                 {
-                    scanner.TheCallingAssembly();
-                    scanner.AddAllTypesOf(typeof(IRepository<,>));
-                    scanner.AddAllTypesOf(typeof(IDataModelAdapter<,,>));
-                    scanner.AddAllTypesOf(typeof(IDataModelRepository<,>));
+                    scanner.AssemblyContainingType<TestApiServiceRegistryCollection>();
+                    scanner.AddAllTypesOf(typeof(IDataModelAdapter<,>));
+                    scanner.AddAllTypesOf(typeof(IDataModelRepository<>));
                     scanner.WithDefaultConventions();
                 });
+
+            For<DbContext>().Use<AppDbContext>().Transient();
         }
     }
 }

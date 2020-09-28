@@ -1,16 +1,33 @@
-﻿using Mmu.Mlh.DataAccess.Areas.DatabaseAccess;
-using Mmu.Mlh.DataAccess.Areas.DataModeling.Services;
-using Mmu.Mlh.DataAccess.Areas.Repositories;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.Adapters;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModelRepositories;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModels;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.Repositories.Implementation
 {
-    public class IndividualRepository : RepositoryBase<Individual, IndividualDataModel, long>, IIndividualRepository
+    public class IndividualRepository : IIndividualRepository
     {
-        public IndividualRepository(IDataModelRepository<IndividualDataModel, long> dataModelRepository, IDataModelAdapter<IndividualDataModel, Individual, long> dataModelAdapter) : base(dataModelRepository, dataModelAdapter)
+        private readonly IDataModelAdapter<Individual, IndividualDataModel> _adapter;
+        private readonly IDataModelRepository<IndividualDataModel> _repo;
+
+        public IndividualRepository(IDataModelRepository<IndividualDataModel> repo, IDataModelAdapter<Individual, IndividualDataModel> adapter)
         {
+            _repo = repo;
+            _adapter = adapter;
+        }
+
+        public async Task<IReadOnlyCollection<Individual>> LoadAllIndividualsAsync()
+        {
+            var dataModels = await _repo.LoadAllAsync();
+            var result = dataModels.Select(dm => _adapter.Adapt(dm)).ToList();
+
+            return result;
         }
     }
 }
