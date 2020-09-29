@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Contexts
 {
     public class AppDbContext : DbContext
     {
@@ -20,7 +20,6 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts
                 return;
             }
 
-            optionsBuilder.UseInMemoryDatabase("TestDb");
             optionsBuilder.ConfigureWarnings(warnings => warnings.Throw());
         }
 

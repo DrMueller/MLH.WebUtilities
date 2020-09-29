@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
@@ -34,9 +34,24 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
             // Arrange
             var individuals = new List<Individual>
             {
-                new Individual("Tra", "Trst", DateTime.MinValue, 1),
-                new Individual("Tra", "Trst", DateTime.MinValue, 1),
-                new Individual("Tra", "Trst", DateTime.MinValue, 1)
+                new Individual
+                {
+                    Birthdate = DateTime.MinValue,
+                    FirstName = "Test Firstname",
+                    LastName = "Test Lastname"
+                },
+                new Individual
+                {
+                    Birthdate = DateTime.MinValue,
+                    FirstName = "Test Firstname",
+                    LastName = "Test Lastname"
+                },
+                new Individual
+                {
+                    Birthdate = DateTime.MinValue,
+                    FirstName = "Test Firstname",
+                    LastName = "Test Lastname"
+                }
             };
 
             _individualRepoMock.Setup(f => f.LoadAllIndividualsAsync())

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using JetBrains.Annotations;
 using Lamar;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +12,7 @@ using Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Initialization;
 
 namespace Mmu.Mlh.WebUtilities.TestApi
 {
+    [PublicAPI]
     public class Startup
     {
         public IConfiguration Configuration { get; }
@@ -21,11 +24,12 @@ namespace Mmu.Mlh.WebUtilities.TestApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Debug.WriteLine("Configure");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
@@ -43,6 +47,8 @@ namespace Mmu.Mlh.WebUtilities.TestApi
 
         public void ConfigureContainer(ServiceRegistry services)
         {
+            Debug.WriteLine("Startup.ConfigureContainer");
+
             var containerConfig = ContainerConfiguration.CreateFromAssembly(typeof(Startup).Assembly, initializeAutoMapper: true);
             ServiceProvisioningInitializer.PopulateRegistry(containerConfig, services);
             services.AddControllers();

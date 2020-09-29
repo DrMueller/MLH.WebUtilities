@@ -1,8 +1,10 @@
 ﻿using System;
+using JetBrains.Annotations;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModels
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities
 {
-    public class IndividualDataModel
+    [PublicAPI]
+    public class Individual
     {
         public long Id { get; set; }
         public DateTime Birthdate { get; set; }

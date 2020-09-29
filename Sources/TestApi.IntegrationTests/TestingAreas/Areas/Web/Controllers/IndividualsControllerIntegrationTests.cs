@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
+using Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.AppFactories;
+using Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Data.Services.Implementation;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Web.Controllers
@@ -12,25 +11,29 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Web.C
     [TestFixture]
     public class IndividualsControllerIntegrationTests
     {
-        private WebApplicationFactory<Startup> _appFactory;
+        private TestAppFactory _appFactory;
 
         [OneTimeSetUp]
         public void AlignAll()
         {
-            _appFactory = new WebApplicationFactory<Startup>();
+            _appFactory = new TestAppFactory();
         }
 
         [Test]
-        public async Task Tra()
+        public async Task GetAll_Should_Get_All_Individuals()
         {
             // Arrange
             var client = _appFactory.CreateClient();
 
             // Act
-            var individuals = await client.GetAsync("api/individuals");
+            var response = await client.GetAsync("api/individuals");
 
             // Assert
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            var json = await response.Content.ReadAsStringAsync();
+            var individuals = JsonConvert.DeserializeObject<List<IndividualDto>>(json);
+
+            Assert.AreEqual(EntitySeeder.CreatedIndividuals, individuals.Count);
         }
     }
-
 }

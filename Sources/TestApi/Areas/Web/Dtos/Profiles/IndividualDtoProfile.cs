@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
+﻿using AutoMapper;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos.Profiles
 {

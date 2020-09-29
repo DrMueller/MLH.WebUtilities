@@ -1,11 +1,11 @@
-﻿using Lamar;
+﻿using JetBrains.Annotations;
+using Lamar;
 using Microsoft.EntityFrameworkCore;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.Adapters;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DataModeling.DataModelRepositories;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Contexts;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Infrastructure.DependencyInjection
 {
+    [UsedImplicitly]
     public class TestApiServiceRegistryCollection : ServiceRegistry
     {
         public TestApiServiceRegistryCollection()
@@ -14,8 +14,6 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Infrastructure.DependencyInjection
                 scanner =>
                 {
                     scanner.AssemblyContainingType<TestApiServiceRegistryCollection>();
-                    scanner.AddAllTypesOf(typeof(IDataModelAdapter<,>));
-                    scanner.AddAllTypesOf(typeof(IDataModelRepository<>));
                     scanner.WithDefaultConventions();
                 });
 

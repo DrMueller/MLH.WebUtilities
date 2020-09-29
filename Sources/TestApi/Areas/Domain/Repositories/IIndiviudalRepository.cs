@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Models;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories
 {
