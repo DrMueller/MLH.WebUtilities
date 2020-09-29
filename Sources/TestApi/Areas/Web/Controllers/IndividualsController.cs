@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
 
@@ -19,6 +20,17 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
         {
             _individualRepo = individualRepo;
             _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IndividualDto>> CreateIndividualAsync(IndividualDto dto)
+        {
+            var entity = _mapper.Map<Individual>(dto);
+            var returnedEntity = await _individualRepo.SaveAsync(entity);
+
+            var resultDto = _mapper.Map<IndividualDto>(returnedEntity);
+
+            return Ok(resultDto);
         }
 
         [HttpGet]

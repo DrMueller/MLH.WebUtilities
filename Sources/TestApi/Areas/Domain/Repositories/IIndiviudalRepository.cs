@@ -7,5 +7,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories
     public interface IIndividualRepository
     {
         public Task<IReadOnlyCollection<Individual>> LoadAllIndividualsAsync();
+
+        public Task<Individual> SaveAsync(Individual individual);
     }
 }
