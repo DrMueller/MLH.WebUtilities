@@ -29,7 +29,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
             var entity = _mapper.Map<Individual>(dto);
 
             using var uow = _uowFactory.Create();
-            var individualRepo = uow.CreateRepository<IIndividualRepository>();
+            var individualRepo = uow.GetRepository<IIndividualRepository>();
             await individualRepo.UpsertAsync(entity);
             await uow.SaveAsync();
 
@@ -42,7 +42,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
         public async Task<ActionResult<IReadOnlyCollection<IndividualDto>>> GetAllAsync()
         {
             using var uow = _uowFactory.Create();
-            var individualRepo = uow.CreateRepository<IIndividualRepository>();
+            var individualRepo = uow.GetRepository<IIndividualRepository>();
             var allIndividuals = await individualRepo.LoadAllAsync();
 
             var dtos = allIndividuals.Select(ind => _mapper.Map<IndividualDto>(ind)).ToList();

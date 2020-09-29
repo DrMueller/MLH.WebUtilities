@@ -22,6 +22,18 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domai
         }
 
         [Test]
+        public void Requesting_Same_Repository_Multiple_Times_Returns_same_Instance()
+        {
+            var uowFactory = _container.GetInstance<IUnitOfWorkFactory>();
+
+            using var uow = uowFactory.Create();
+            var indRepo1 = uow.GetRepository<IIndividualRepository>();
+            var indRepo2 = uow.GetRepository<IIndividualRepository>();
+
+            Assert.AreSame(indRepo1, indRepo2);
+        }
+
+        [Test]
         public async Task UpdatingData_WithoutSaving_DoesNotSaveData()
         {
             // Arrange & Act
@@ -29,8 +41,8 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domai
 
             using (var uow = uowFactory.Create())
             {
-                var indRepo = uow.CreateRepository<IIndividualRepository>();
-                var orgRepo = uow.CreateRepository<IOrganisationRepository>();
+                var indRepo = uow.GetRepository<IIndividualRepository>();
+                var orgRepo = uow.GetRepository<IOrganisationRepository>();
 
                 await indRepo.UpsertAsync(new Individual());
                 await orgRepo.UpsertAsync(new Organisation());
@@ -39,8 +51,8 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domai
             // Assert
             using (var uow = uowFactory.Create())
             {
-                var indRepo = uow.CreateRepository<IIndividualRepository>();
-                var orgRepo = uow.CreateRepository<IOrganisationRepository>();
+                var indRepo = uow.GetRepository<IIndividualRepository>();
+                var orgRepo = uow.GetRepository<IOrganisationRepository>();
 
                 var actualIndividuals = await indRepo.LoadAllAsync();
                 var actualOrganisations = await orgRepo.LoadAllAsync();
@@ -58,8 +70,8 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domai
 
             using (var uow = uowFactory.Create())
             {
-                var indRepo = uow.CreateRepository<IIndividualRepository>();
-                var orgRepo = uow.CreateRepository<IOrganisationRepository>();
+                var indRepo = uow.GetRepository<IIndividualRepository>();
+                var orgRepo = uow.GetRepository<IOrganisationRepository>();
 
                 await indRepo.UpsertAsync(new Individual());
                 await orgRepo.UpsertAsync(new Organisation());
@@ -70,8 +82,8 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domai
             // Assert
             using (var uow = uowFactory.Create())
             {
-                var indRepo = uow.CreateRepository<IIndividualRepository>();
-                var orgRepo = uow.CreateRepository<IOrganisationRepository>();
+                var indRepo = uow.GetRepository<IIndividualRepository>();
+                var orgRepo = uow.GetRepository<IOrganisationRepository>();
 
                 var actualIndividuals = await indRepo.LoadAllAsync();
                 var actualOrganisations = await orgRepo.LoadAllAsync();

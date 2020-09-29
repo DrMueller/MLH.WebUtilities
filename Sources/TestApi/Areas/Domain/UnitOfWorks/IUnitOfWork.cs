@@ -6,7 +6,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks
 {
     public interface IUnitOfWork : IDisposable
     {
-        TRepo CreateRepository<TRepo>()
+        TRepo GetRepository<TRepo>()
             where TRepo : IRepository;
 
         Task SaveAsync();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Mmu.Mlh.ServiceProvisioning.Areas.Provisioning.Services;
@@ -10,16 +11,30 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
 {
     internal class UnitOfWork : IUnitOfWork
     {
+        private readonly ConcurrentDictionary<Type, IRepository> _repos;
         private readonly IServiceLocator _serviceLocator;
         private DbContext _dbContext;
 
         public UnitOfWork(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
+            _repos = new ConcurrentDictionary<Type, IRepository>();
         }
 
-        public TRepo CreateRepository<TRepo>() where TRepo : IRepository
+        public void Dispose()
         {
+            _dbContext?.Dispose();
+        }
+
+        public TRepo GetRepository<TRepo>() where TRepo : IRepository
+        {
+            var repoType = typeof(TRepo);
+
+            if (_repos.ContainsKey(repoType))
+            {
+                return (TRepo)_repos[repoType];
+            }
+
             var repository = _serviceLocator.GetService<TRepo>();
 
             if (!(repository is RepositoryBase repoBase))
@@ -29,12 +44,9 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
 
             repoBase.Initialize(_dbContext);
 
-            return repository;
-        }
+            _repos.AddOrUpdate(repoType, repository, (type, repo) => repo);
 
-        public void Dispose()
-        {
-            _dbContext?.Dispose();
+            return repository;
         }
 
         public async Task SaveAsync()

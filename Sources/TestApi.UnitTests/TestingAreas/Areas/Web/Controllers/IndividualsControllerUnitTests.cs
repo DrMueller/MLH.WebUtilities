@@ -28,7 +28,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
             _individualRepoMock = new Mock<IIndividualRepository>();
 
             uowFactoryMock.Setup(f => f.Create()).Returns(uowMock.Object);
-            uowMock.Setup(f => f.CreateRepository<IIndividualRepository>()).Returns(_individualRepoMock.Object);
+            uowMock.Setup(f => f.GetRepository<IIndividualRepository>()).Returns(_individualRepoMock.Object);
 
             _sut = new IndividualsController(
                 uowFactoryMock.Object,
