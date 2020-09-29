@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
 using Moq;
@@ -22,9 +23,15 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
         public IndividualsControllerUnitTests()
         {
             _mapperMock = new Mock<IMapper>();
+            var uowFactoryMock = new Mock<IUnitOfWorkFactory>();
+            var uowMock = new Mock<IUnitOfWork>();
             _individualRepoMock = new Mock<IIndividualRepository>();
+
+            uowFactoryMock.Setup(f => f.Create()).Returns(uowMock.Object);
+            uowMock.Setup(f => f.CreateRepository<IIndividualRepository>()).Returns(_individualRepoMock.Object);
+
             _sut = new IndividualsController(
-                _individualRepoMock.Object,
+                uowFactoryMock.Object,
                 _mapperMock.Object);
         }
 
@@ -54,7 +61,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
                 }
             };
 
-            _individualRepoMock.Setup(f => f.LoadAllIndividualsAsync())
+            _individualRepoMock.Setup(f => f.LoadAllAsync())
                 .Returns(Task.FromResult<IReadOnlyCollection<Individual>>(individuals));
 
             _mapperMock
@@ -64,18 +71,24 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
             // Act
             var actualResult = await _sut.GetAllAsync();
 
-            var okResult = actualResult.Result as OkObjectResult;
-            var dtos = okResult.Value as List<IndividualDto>;
-
             // Assert
-            Assert.AreEqual(individuals.Count, dtos.Count);
+            if (actualResult.Result is OkObjectResult okResult)
+            {
+                var dtos = okResult.Value as List<IndividualDto>;
+
+                Assert.AreEqual(individuals.Count, dtos?.Count ?? 0);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
         public async Task FetchingAllIndividuals_WithoutErrors_ReturnsOk()
         {
             // Arrange
-            _individualRepoMock.Setup(f => f.LoadAllIndividualsAsync())
+            _individualRepoMock.Setup(f => f.LoadAllAsync())
                 .Returns(Task.FromResult<IReadOnlyCollection<Individual>>(new List<Individual>()));
 
             // Act

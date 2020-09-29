@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
 using Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.AppFactories;
-using Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Data.Services.Implementation;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -33,7 +32,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Web.C
             var json = await response.Content.ReadAsStringAsync();
             var individuals = JsonConvert.DeserializeObject<List<IndividualDto>>(json);
 
-            Assert.AreEqual(EntitySeeder.CreatedIndividuals, individuals.Count);
+            Assert.AreNotEqual(0, individuals.Count);
         }
     }
 }

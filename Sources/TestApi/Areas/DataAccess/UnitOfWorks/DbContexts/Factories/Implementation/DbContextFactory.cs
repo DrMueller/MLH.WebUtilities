@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Contexts;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Factories.Implementation
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Factories.Implementation
 {
     public class DbContextFactory : IDbContextFactory
     {

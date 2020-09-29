@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Contexts
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts
 {
     public class AppDbContext : DbContext
     {

@@ -1,14 +1,13 @@
 ﻿using System;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.DbContexts.Factories;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Factories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Data.Services.Implementation
 {
     public class EntitySeeder : IEntitySeeder
     {
-        private readonly IDbContextFactory _dbContextFactory;
-
         public const int CreatedIndividuals = 6;
+        private readonly IDbContextFactory _dbContextFactory;
 
         private readonly bool _isSeeded = false;
         private readonly object _lock = new object();

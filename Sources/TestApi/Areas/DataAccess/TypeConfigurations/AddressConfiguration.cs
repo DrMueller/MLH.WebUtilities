@@ -4,15 +4,13 @@ using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.TypeConfigurations
 {
-    public class IndividualConfiguration : IEntityTypeConfiguration<Individual>
+    public class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Individual> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
             builder.HasKey(f => f.Id);
             builder.Property(f => f.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Property(f => f.Birthdate).IsRequired();
-            builder.Property(f => f.FirstName).IsRequired();
-            builder.Property(f => f.LastName).IsRequired();
+            builder.Property(f => f.StreetName).IsRequired();
         }
     }
 }

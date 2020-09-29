@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Repositories;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Dtos;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
@@ -13,12 +14,12 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
     [Route("api/[controller]")]
     public class IndividualsController : ControllerBase
     {
-        private readonly IIndividualRepository _individualRepo;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWorkFactory _uowFactory;
 
-        public IndividualsController(IIndividualRepository individualRepo, IMapper mapper)
+        public IndividualsController(IUnitOfWorkFactory uowFactory, IMapper mapper)
         {
-            _individualRepo = individualRepo;
+            _uowFactory = uowFactory;
             _mapper = mapper;
         }
 
@@ -26,17 +27,24 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.Web.Controllers
         public async Task<ActionResult<IndividualDto>> CreateIndividualAsync(IndividualDto dto)
         {
             var entity = _mapper.Map<Individual>(dto);
-            var returnedEntity = await _individualRepo.SaveAsync(entity);
 
+            using var uow = _uowFactory.Create();
+            var individualRepo = uow.CreateRepository<IIndividualRepository>();
+            await individualRepo.UpsertAsync(entity);
+            await uow.SaveAsync();
+
+            var returnedEntity = await individualRepo.LoadByIdAsync(entity.Id);
             var resultDto = _mapper.Map<IndividualDto>(returnedEntity);
-
             return Ok(resultDto);
         }
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyCollection<IndividualDto>>> GetAllAsync()
         {
-            var allIndividuals = await _individualRepo.LoadAllIndividualsAsync();
+            using var uow = _uowFactory.Create();
+            var individualRepo = uow.CreateRepository<IIndividualRepository>();
+            var allIndividuals = await individualRepo.LoadAllAsync();
+
             var dtos = allIndividuals.Select(ind => _mapper.Map<IndividualDto>(ind)).ToList();
 
             return Ok(dtos);

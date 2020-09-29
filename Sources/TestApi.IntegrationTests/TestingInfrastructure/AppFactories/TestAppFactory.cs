@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using Lamar;
 using Lamar.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -16,9 +15,6 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Ap
     {
         protected override void ConfigureClient(HttpClient client)
         {
-            var lamar = (Container)base.Services;
-
-
             var entitySeeder = base.Services.GetService<IEntitySeeder>();
             entitySeeder.AssureTestDataIsSeeded();
 
