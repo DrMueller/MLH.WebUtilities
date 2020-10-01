@@ -7,7 +7,7 @@ using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
 using NUnit.Framework;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Domain.UnitOfWorks
+namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataAccess.UnitOfWorks
 {
     [TestFixture]
     public class UnitOfWorkIntegrationTests
