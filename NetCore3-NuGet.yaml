@@ -4,7 +4,9 @@ variables:
   BuildConfiguration: 'Release'
   FolderToPack: 'Application'
   SolutionName: 'MLH.WebUtilities.sln'
-  
+  ApplicationSubPath: 'MLH.WebUtilities' # The logic doesn't use the full repository name, therefore we cant use the build variable
+  ReSharperSettingsFileName: 'CISettings_NuGet.DotSettings'
+
 resources:
   repositories:
   - repository: ALMStuff
@@ -20,10 +22,14 @@ jobs:
     name: Azure Pipelines
     vmImage: windows-2019 # note that the Resharper CLT will only work on a windows machine or container
   steps:
+  - checkout: self
+  - checkout: ALMStuff
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Initialize_And_Test.yaml@ALMStuff
     parameters:
       BuildConfiguration: $(BuildConfiguration)
       SolutionName: $(SolutionName)
+      ApplicationSubPath: $(ApplicationSubPath)
+      ReSharperSettingsFileName: $(ReSharperSettingsFileName)
   - template: AzureDevOps/BuildTemplates/NetCore/Steps/Pack_And_Publish_To_NuGet.yaml@ALMStuff
     parameters:
       FolderToPack: $(FolderToPack)
