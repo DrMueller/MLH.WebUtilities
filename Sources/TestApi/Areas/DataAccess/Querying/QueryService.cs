@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Querying;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.Querying
 {
     internal class QueryService : IQueryService
     {
-        private readonly DbContext _dbContext;
+        private readonly IDbContext _dbContext;
 
-        public QueryService(DbContext dbContext)
+        public QueryService(IDbContext dbContext)
         {
             _dbContext = dbContext;
         }

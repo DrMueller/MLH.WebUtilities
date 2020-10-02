@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Mmu.Mlh.ServiceProvisioning.Areas.Provisioning.Services;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
@@ -13,7 +13,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
     {
         private readonly ConcurrentDictionary<Type, IRepository> _repos;
         private readonly IServiceLocator _serviceLocator;
-        private DbContext _dbContext;
+        private IDbContext _dbContext;
 
         public UnitOfWork(IServiceLocator serviceLocator)
         {
@@ -54,7 +54,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
             await _dbContext.SaveChangesAsync();
         }
 
-        internal void Initialize(DbContext dbContext)
+        internal void Initialize(IDbContext dbContext)
         {
             _dbContext = dbContext;
         }

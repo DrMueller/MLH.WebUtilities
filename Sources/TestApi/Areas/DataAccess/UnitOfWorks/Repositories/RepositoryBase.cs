@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.Repositories
@@ -8,7 +9,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.Repositories
     // We can't currently cast to generic types, so we ease a ungeneric one for easeness
     public abstract class RepositoryBase
     {
-        public abstract void Initialize(DbContext dbContext);
+        public abstract void Initialize(IDbContext dbContext);
     }
 
     public abstract class RepositoryBase<TEntity> : RepositoryBase
@@ -16,7 +17,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.Repositories
     {
         protected DbSet<TEntity> DbSet { get; private set; }
 
-        public override void Initialize(DbContext dbContext)
+        public override void Initialize(IDbContext dbContext)
         {
             DbSet = dbContext.Set<TEntity>();
         }

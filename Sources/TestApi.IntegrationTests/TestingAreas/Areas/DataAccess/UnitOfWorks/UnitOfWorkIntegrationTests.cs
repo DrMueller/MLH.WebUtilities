@@ -1,10 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Lamar;
+using Microsoft.EntityFrameworkCore;
 using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
 using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Services;
+using Mmu.Mlh.ServiceProvisioning.Areas.Provisioning.Services;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Factories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
+using Moq;
 using NUnit.Framework;
 
 namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataAccess.UnitOfWorks
@@ -37,60 +44,69 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataA
         public async Task UpdatingData_WithoutSaving_DoesNotSaveData()
         {
             // Arrange & Act
-            var uowFactory = _container.GetInstance<IUnitOfWorkFactory>();
+            var serviceLocator = _container.GetInstance<IServiceLocator>();
+            var dbContextFactoryMock = new Mock<IDbContextFactory>();
+            var dbContextMock = new Mock<IDbContext>();
 
-            using (var uow = uowFactory.Create())
-            {
-                var indRepo = uow.GetRepository<IIndividualRepository>();
-                var orgRepo = uow.GetRepository<IOrganisationRepository>();
+            dbContextMock.Setup(f => f.Set<Individual>()).Returns(Mock.Of<DbSet<Individual>>());
 
-                await indRepo.UpsertAsync(new Individual());
-                await orgRepo.UpsertAsync(new Organisation());
-            }
+            dbContextMock.Setup(f => f.Set<Organisation>()).Returns(Mock.Of<DbSet<Organisation>>());
+
+            dbContextFactoryMock
+                .Setup(f => f.Create())
+                .Returns(dbContextMock.Object);
+
+            var uowFactory = new UnitOfWorkFactory(
+                serviceLocator,
+                dbContextFactoryMock.Object);
+
+            var ind = new Individual();
+            var org = new Organisation();
+
+            using var uow = uowFactory.Create();
+            var indRepo = uow.GetRepository<IIndividualRepository>();
+            var orgRepo = uow.GetRepository<IOrganisationRepository>();
+
+            await indRepo.UpsertAsync(ind);
+            await orgRepo.UpsertAsync(org);
 
             // Assert
-            using (var uow = uowFactory.Create())
-            {
-                var indRepo = uow.GetRepository<IIndividualRepository>();
-                var orgRepo = uow.GetRepository<IOrganisationRepository>();
-
-                var actualIndividuals = await indRepo.LoadAllAsync();
-                var actualOrganisations = await orgRepo.LoadAllAsync();
-
-                CollectionAssert.IsEmpty(actualIndividuals);
-                CollectionAssert.IsEmpty(actualOrganisations);
-            }
+            dbContextMock.Verify(f => f.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Test]
         public async Task UpdatingData_WithSaving_SavesData()
         {
             // Arrange & Act
-            var uowFactory = _container.GetInstance<IUnitOfWorkFactory>();
+            var serviceLocator = _container.GetInstance<IServiceLocator>();
+            var dbContextFactoryMock = new Mock<IDbContextFactory>();
+            var dbContextMock = new Mock<IDbContext>();
 
-            using (var uow = uowFactory.Create())
-            {
-                var indRepo = uow.GetRepository<IIndividualRepository>();
-                var orgRepo = uow.GetRepository<IOrganisationRepository>();
+            dbContextMock.Setup(f => f.Set<Individual>()).Returns(Mock.Of<DbSet<Individual>>());
 
-                await indRepo.UpsertAsync(new Individual());
-                await orgRepo.UpsertAsync(new Organisation());
+            dbContextMock.Setup(f => f.Set<Organisation>()).Returns(Mock.Of<DbSet<Organisation>>());
 
-                await uow.SaveAsync();
-            }
+            dbContextFactoryMock
+                .Setup(f => f.Create())
+                .Returns(dbContextMock.Object);
+
+            var uowFactory = new UnitOfWorkFactory(
+                serviceLocator,
+                dbContextFactoryMock.Object);
+
+            var ind = new Individual();
+            var org = new Organisation();
+
+            using var uow = uowFactory.Create();
+            var indRepo = uow.GetRepository<IIndividualRepository>();
+            var orgRepo = uow.GetRepository<IOrganisationRepository>();
+
+            await indRepo.UpsertAsync(ind);
+            await orgRepo.UpsertAsync(org);
+            await uow.SaveAsync();
 
             // Assert
-            using (var uow = uowFactory.Create())
-            {
-                var indRepo = uow.GetRepository<IIndividualRepository>();
-                var orgRepo = uow.GetRepository<IOrganisationRepository>();
-
-                var actualIndividuals = await indRepo.LoadAllAsync();
-                var actualOrganisations = await orgRepo.LoadAllAsync();
-
-                CollectionAssert.IsNotEmpty(actualIndividuals);
-                CollectionAssert.IsNotEmpty(actualOrganisations);
-            }
+            dbContextMock.Verify(f => f.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

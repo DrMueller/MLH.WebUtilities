@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts
+namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts.Implementation
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IDbContext
     {
-        public AppDbContext()
-        {
-        }
-
         public AppDbContext(DbContextOptions options)
             : base(options)
         {

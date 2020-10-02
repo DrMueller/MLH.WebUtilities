@@ -3,7 +3,7 @@ using Lamar;
 using Microsoft.EntityFrameworkCore;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.Querying;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks;
-using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
+using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts.Implementation;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Querying;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
 
