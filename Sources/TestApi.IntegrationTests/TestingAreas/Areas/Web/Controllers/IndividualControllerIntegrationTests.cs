@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Web.Controllers
 {
     [TestFixture]
-    public class IndividualsControllerIntegrationTests
+    public class IndividualControllerIntegrationTests
     {
         private TestAppFactory _appFactory;
 
@@ -19,7 +19,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.Web.C
         }
 
         [Test]
-        public async Task GetAll_Should_Get_All_Individuals()
+        public async Task GettingAllIndividuals_GetsAllIndividuals()
         {
             // Arrange
             var client = _appFactory.CreateClient();

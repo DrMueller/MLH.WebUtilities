@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using AutoMapper;
 using JetBrains.Annotations;
 using Lamar;
 using Microsoft.AspNetCore.Builder;
@@ -6,8 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Services;
 using Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Initialization;
 
 namespace Mmu.Mlh.WebUtilities.TestApi
@@ -33,6 +32,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi
 
             app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
+            app.UseGlobalExceptionHandler();
 
             app.UseRouting();
 
@@ -49,9 +49,22 @@ namespace Mmu.Mlh.WebUtilities.TestApi
         {
             Debug.WriteLine("Startup.ConfigureContainer");
 
-            var containerConfig = ContainerConfiguration.CreateFromAssembly(typeof(Startup).Assembly, initializeAutoMapper: true);
-            ServiceProvisioningInitializer.PopulateRegistry(containerConfig, services);
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.Scan(
+                scanner =>
+                {
+                    scanner.AssembliesFromApplicationBaseDirectory();
+                    scanner.LookForRegistries();
+                });
+
+            RegisterMocks(services);
+
             services.AddControllers();
+        }
+
+        protected virtual void RegisterMocks(ServiceRegistry services)
+        {
         }
     }
 }

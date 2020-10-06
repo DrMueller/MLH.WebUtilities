@@ -22,7 +22,6 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Infrastructure.DependencyInjection
                 });
 
             For<DbContext>().Use<AppDbContext>().Transient();
-
             For<UnitOfWork>().Use<UnitOfWork>().Transient();
             For<IUnitOfWorkFactory>().Use<UnitOfWorkFactory>().Transient();
             For<IQueryServiceFactory>().Use<QueryServiceFactory>().Singleton();

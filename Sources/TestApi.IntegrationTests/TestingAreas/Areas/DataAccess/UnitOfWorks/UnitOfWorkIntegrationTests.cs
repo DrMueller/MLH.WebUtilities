@@ -2,9 +2,6 @@
 using System.Threading.Tasks;
 using Lamar;
 using Microsoft.EntityFrameworkCore;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Services;
-using Mmu.Mlh.ServiceProvisioning.Areas.Provisioning.Services;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Factories;
@@ -24,8 +21,16 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataA
         [SetUp]
         public void Align()
         {
-            var containerConfig = ContainerConfiguration.CreateFromAssembly(typeof(UnitOfWorkIntegrationTests).Assembly);
-            _container = ServiceProvisioningInitializer.CreateContainer(containerConfig);
+            _container = new Container(
+                cfg =>
+                {
+                    cfg.Scan(
+                        scanner =>
+                        {
+                            scanner.AssembliesFromApplicationBaseDirectory();
+                            scanner.LookForRegistries();
+                        });
+                });
         }
 
         [Test]
@@ -44,7 +49,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataA
         public async Task UpdatingData_WithoutSaving_DoesNotSaveData()
         {
             // Arrange & Act
-            var serviceLocator = _container.GetInstance<IServiceLocator>();
+            var serviceLocator = _container.GetInstance<IContainer>();
             var dbContextFactoryMock = new Mock<IDbContextFactory>();
             var dbContextMock = new Mock<IDbContext>();
 
@@ -78,7 +83,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataA
         public async Task UpdatingData_WithSaving_SavesData()
         {
             // Arrange & Act
-            var serviceLocator = _container.GetInstance<IServiceLocator>();
+            var serviceLocator = _container.GetInstance<IContainer>();
             var dbContextFactoryMock = new Mock<IDbContextFactory>();
             var dbContextMock = new Mock<IDbContext>();
 

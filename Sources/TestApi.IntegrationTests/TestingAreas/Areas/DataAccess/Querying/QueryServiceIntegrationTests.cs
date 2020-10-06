@@ -4,13 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lamar;
 using Microsoft.EntityFrameworkCore;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Models;
-using Mmu.Mlh.ServiceProvisioning.Areas.Initialization.Services;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Entities;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.Querying;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks.Repositories;
-using Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataAccess.UnitOfWorks;
 using Moq;
 using NUnit.Framework;
 
@@ -25,8 +22,16 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingAreas.Areas.DataA
         [SetUp]
         public void Align()
         {
-            var containerConfig = ContainerConfiguration.CreateFromAssembly(typeof(UnitOfWorkIntegrationTests).Assembly);
-            _container = ServiceProvisioningInitializer.CreateContainer(containerConfig);
+            _container = new Container(
+                cfg =>
+                {
+                    cfg.Scan(
+                        scanner =>
+                        {
+                            scanner.AssembliesFromApplicationBaseDirectory();
+                            scanner.LookForRegistries();
+                        });
+                });
 
             _uowFactory = _container.GetInstance<IUnitOfWorkFactory>();
         }

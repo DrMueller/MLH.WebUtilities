@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Mmu.Mlh.ServiceProvisioning.Areas.Provisioning.Services;
+using Lamar;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.DbContexts.Contexts;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks.Repositories;
 using Mmu.Mlh.WebUtilities.TestApi.Areas.Domain.UnitOfWorks;
@@ -12,10 +12,10 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
     internal class UnitOfWork : IUnitOfWork
     {
         private readonly ConcurrentDictionary<Type, IRepository> _repos;
-        private readonly IServiceLocator _serviceLocator;
+        private readonly IContainer _serviceLocator;
         private IDbContext _dbContext;
 
-        public UnitOfWork(IServiceLocator serviceLocator)
+        public UnitOfWork(IContainer serviceLocator)
         {
             _serviceLocator = serviceLocator;
             _repos = new ConcurrentDictionary<Type, IRepository>();
@@ -35,7 +35,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.Areas.DataAccess.UnitOfWorks
                 return (TRepo)_repos[repoType];
             }
 
-            var repository = _serviceLocator.GetService<TRepo>();
+            var repository = _serviceLocator.GetInstance<TRepo>();
 
             if (!(repository is RepositoryBase repoBase))
             {

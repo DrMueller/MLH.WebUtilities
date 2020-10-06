@@ -2,6 +2,8 @@
 
  <PropertyGroup>
   <TargetFramework>netcoreapp3.1</TargetFramework>
+  <Features>IOperation</Features>
+  <CodeAnalysisRuleSet>..\..\CA_TestCode.ruleset</CodeAnalysisRuleSet>
  </PropertyGroup>
 
  <ItemGroup>

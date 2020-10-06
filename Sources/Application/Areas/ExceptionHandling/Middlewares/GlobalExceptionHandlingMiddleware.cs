@@ -19,6 +19,7 @@ namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Middlewares
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Global exception handler")]
+        [SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "Convention for middlewares")]
         public async Task Invoke(HttpContext httpContext)
         {
             try
