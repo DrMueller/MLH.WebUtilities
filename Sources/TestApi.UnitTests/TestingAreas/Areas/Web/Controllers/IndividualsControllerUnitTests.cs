@@ -16,16 +16,17 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
     [TestFixture]
     public class IndividualsControllerUnitTests
     {
+        private readonly Mock<IIndividualRepository> _individualRepoMock;
+
         private readonly IndividualsController _sut;
         private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<IIndividualRepository> _individualRepoMock;
 
         public IndividualsControllerUnitTests()
         {
+            _individualRepoMock = new Mock<IIndividualRepository>();
             _mapperMock = new Mock<IMapper>();
             var uowFactoryMock = new Mock<IUnitOfWorkFactory>();
             var uowMock = new Mock<IUnitOfWork>();
-            _individualRepoMock = new Mock<IIndividualRepository>();
 
             uowFactoryMock.Setup(f => f.Create()).Returns(uowMock.Object);
             uowMock.Setup(f => f.GetRepository<IIndividualRepository>()).Returns(_individualRepoMock.Object);
@@ -62,7 +63,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.UnitTests.TestingAreas.Areas.Web.Controll
             };
 
             _individualRepoMock.Setup(f => f.LoadAllAsync())
-                .Returns(Task.FromResult<IReadOnlyCollection<Individual>>(individuals));
+                .ReturnsAsync(individuals);
 
             _mapperMock
                 .Setup(f => f.Map<IndividualDto>(It.IsAny<object>()))

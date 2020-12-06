@@ -7,12 +7,12 @@
  </PropertyGroup>
 
  <ItemGroup>
-  <PackageReference Include="AutoMapper" Version="10.0.0" />
-  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
-  <PackageReference Include="Lamar" Version="4.3.0" />
-  <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="3.1.0" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.8" />
-  <PackageReference Include="Mmu.Mlh.DomainExtensions" Version="2.1.3" />
+  <PackageReference Include="AutoMapper" Version="10.1.1" />
+  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+  <PackageReference Include="Lamar" Version="4.4.0" />
+  <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.4.0" />
+  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
+  <PackageReference Include="Mmu.Mlh.DomainExtensions" Version="2.1.6" />
  </ItemGroup>
 
  <ItemGroup>
