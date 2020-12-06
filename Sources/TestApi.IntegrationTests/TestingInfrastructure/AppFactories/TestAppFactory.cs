@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using Lamar.Microsoft.DependencyInjection;
@@ -16,6 +17,11 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Ap
         protected override void ConfigureClient(HttpClient client)
         {
             var entitySeeder = base.Services.GetService<IEntitySeeder>();
+            if (entitySeeder == null)
+            {
+                throw new Exception("tra");
+            }
+
             entitySeeder.AssureTestDataIsSeeded();
 
             base.ConfigureClient(client);
