@@ -25,6 +25,7 @@
  <ItemGroup>
   <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
   <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   <PackageReference Include="Mmu.Mlh.LanguageExtensions" Version="2.3.88" />
   <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
  </ItemGroup>

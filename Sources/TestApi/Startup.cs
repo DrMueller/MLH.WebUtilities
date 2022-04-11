@@ -33,7 +33,6 @@ namespace Mmu.Mlh.WebUtilities.TestApi
             app.UseGlobalExceptionHandler();
             app.UseHttpsRedirection();
             app.UseGlobalExceptionHandler();
-
             app.UseRouting();
 
             app.UseAuthorization();

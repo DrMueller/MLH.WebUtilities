@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Models;
 using Newtonsoft.Json;
 
@@ -11,10 +12,14 @@ namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Middlewares
 {
     internal class GlobalExceptionHandlingMiddleware
     {
+        private readonly ILogger _logger;
         private readonly RequestDelegate _next;
 
-        public GlobalExceptionHandlingMiddleware(RequestDelegate next)
+        public GlobalExceptionHandlingMiddleware(
+            ILogger logger,
+            RequestDelegate next)
         {
+            _logger = logger;
             _next = next;
         }
 
@@ -28,6 +33,8 @@ namespace Mmu.Mlh.WebUtilities.Areas.ExceptionHandling.Middlewares
             }
             catch (Exception exception)
             {
+                _logger.Log(LogLevel.Error, exception, exception.Message);
+
                 var response = httpContext.Response;
                 response.ContentType = MediaTypeNames.Application.Json;
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
