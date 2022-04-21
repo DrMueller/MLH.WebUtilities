@@ -9,7 +9,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Da
         public const int CreatedIndividuals = 6;
         private readonly IDbContextFactory _dbContextFactory;
 
-        private readonly bool _isSeeded = false;
+        private bool _isSeeded;
         private readonly object _lock = new object();
 
         public EntitySeeder(IDbContextFactory dbContextFactory)
@@ -44,6 +44,7 @@ namespace Mmu.Mlh.WebUtilities.TestApi.IntegrationTests.TestingInfrastructure.Da
                 }
 
                 dbContext.SaveChanges();
+                _isSeeded = true;
             }
         }
     }
